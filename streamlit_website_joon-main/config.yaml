@@ -1,0 +1,17 @@
+cookie:
+  expiry_days: 30
+  key: some_signature_key
+  name: some_cookie_name
+credentials:
+  usernames:
+    eotkdch1993:
+      email: eotkdch1993@naver.com
+      name: Park Soyoung
+      password: $2b$12$7OpD9EEMR/lcSJpJaoCjsubLuOAMnbNhxFVMG/oVIORQG5l7PB4iy
+    ghwnsgkgk:
+      email: ghwnsgkgk@kakao.com
+      name: Lee Joonho
+      password: $2b$12$rWyTvFtTzFENMPoGbvjv0.ik5qFt/MET8KbjIuCr15dwyvWFC8P.a
+preauthorized:
+  emails:
+  - ghwnsgkgkgk@gmail.com
