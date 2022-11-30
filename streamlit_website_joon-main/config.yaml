@@ -8,18 +8,18 @@ credentials:
       email: jhlee@jyoungsoft.com
       name: admin
       password: $2b$12$f.St1zklstkZ23XYMDWClek6iJz.mxxCzcI7BhUYOC4SQPAXfSuDW
+    eotkdch:
+      email: eotkdch1993@naver.com
+      name: eotkdch
+      password: $2b$12$smjHhu9EukZm6lDulFPs9OEzReg8LnrJh5L5CLkeIC6pF3EWMQyme
     ghwnsgkgk:
-      email: ghwnsgkgk@kakao.com
-      name: "\uC774\uC900\uD638"
-      password: $2b$12$2axUlVG0XE4hx3i0GaM7weU3Z5FjADjsZasSOOsKekxIZwtcBLRca
-    wnsgh:
-      email: ghwnsgkgk@nate.com
-      name: Lee joonho
-      password: $2b$12$3bp1ndxaMr5i0HtrKM9Oe.PB/dEaO54Z0nI.P8UzcKH9q2Am6Lt2.
-    wnsgh222:
       email: ghwnsglgl@nate.com
+      name: leejoonho
+      password: $2b$12$2axUlVG0XE4hx3i0GaM7weU3Z5FjADjsZasSOOsKekxIZwtcBLRca
+    wnsghwnsgh:
+      email: ghwnsgkgk@nate.com
       name: "\uC774\uC900\uD638"
-      password: $2b$12$iymrpbXv1Aw3WzSIVQPCi.RrfXhWt2p7n2vo/h/8474r3FooJ6By6
+      password: $2b$12$J11KxFJbz90Zvj.VSXJv1ePhTikZA3PGr3hFFxJOpQdS10GCwCDyW
 preauthorized:
   emails:
   - ghwnsgkgkgk@gmail.com

@@ -1,1 +1,82 @@
 pip install streamlit-authenticator
+
+
+
+
+
+# if authentication_status:
+
+#     st.write(f'Welcome *{name}*')
+
+#     # insert content
+#     page_names_to_funcs = {
+#         "🐦HOME": home,
+#         "🌏PROJECT": project,
+#         "📞CONTACT": contact,
+#         "📈INVESTMENT": investment,
+#         "💰SAVING": saving,
+#         "🎈LOVE": love
+
+#     }
+#     # sidebar.selectbox
+#     demo_name = st.sidebar.selectbox("목록", page_names_to_funcs.keys())
+#     page_names_to_funcs[demo_name]()
+#     authenticator.logout('Logout', 'sidebar')
+
+
+# elif authentication_status == False:
+#     st.error('Username/password is incorrect')
+
+# elif authentication_status == None:
+#     st.warning('Please enter your username and password')
+
+# # Creating a password reset widget
+# if authentication_status:
+#     try:
+#         if authenticator.reset_password(username, 'Reset password'):
+#             st.success('Password modified successfully')
+#     except Exception as e:
+#         st.error(e)
+
+# # Creating a new user registration widget
+# try:
+#     if authenticator.register_user('Register user', 'main', preauthorization=False):
+#         st.success('User registered successfully')
+# except Exception as e:
+#     st.error(e)
+
+# # Creating a forgot password widget
+# try:
+#     username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password(
+#         'Forgot password')
+#     if username_forgot_pw:
+#         st.success('New password sent securely')
+#         # Random password to be transferred to user securely
+#     elif username_forgot_pw == False:
+#         st.error('Username not found')
+# except Exception as e:
+#     st.error(e)
+
+# # Creating a forgot username widget
+# try:
+#     username_forgot_username, email_forgot_username = authenticator.forgot_username(
+#         'Forgot username')
+#     if username_forgot_username:
+#         st.success('Username sent securely')
+#         # Username to be transferred to user securely
+#     elif username_forgot_username == False:
+#         st.error('Email not found')
+# except Exception as e:
+#     st.error(e)
+
+# # Creating an update user details widget
+# if authentication_status:
+#     try:
+#         if authenticator.update_user_details(username, 'Update user details'):
+#             st.success('Entries updated successfully')
+#     except Exception as e:
+#         st.error(e)
+
+# # Saving config file
+# with open('../config.yaml', 'w') as file:
+#     yaml.dump(config, file, default_flow_style=False)

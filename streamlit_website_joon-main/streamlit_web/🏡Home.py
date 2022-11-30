@@ -18,41 +18,59 @@ st.set_page_config(
 )
 
 
-def home():
+def home(username):
     import streamlit as st
+    from streamlit_option_menu import option_menu
+    import streamlit_authenticator as stauth  # pip install streamlit_authenticator
 
-    st.write("# Welcome to everyone 👋")
-    st.sidebar.success("Select above.")
+    selected = option_menu(menu_title=None, options=["Intro", "User"], icons=[
+                           "pencil-fill", "bar-chart-fill"], orientation="horizontal",)
+    if selected == "Intro":
+        st.write("# Welcome to everyone 👋")
+        st.sidebar.success("Select above.")
 
-    st.markdown(
+        st.markdown(
+            """
+            센텀준호의 홈페이지를 방문해주셔서 감사합니다
+            
+            해당 페이지는 Streamlit 기반 python 언어로 개발 되었습니다. 
+            
+            문의 사항은 contact 페이지를 통해 연락 부탁드립니다.
+
+        
+            ### Want to learn more?
+
+            - Check out [streamlit.io](https://streamlit.io)
+            - Jump into our [documentation](https://docs.streamlit.io)
+            - Ask a question in our [communityforums](https://discuss.streamlit.io)
         """
-        센텀준호의 홈페이지를 방문해주셔서 감사합니다
-        
-        해당 페이지는 Streamlit 기반 python 언어로 개발 되었습니다. 
-        
-        문의 사항은 contact 페이지를 통해 연락 부탁드립니다.
+        )
 
-       
-        ### Want to learn more?
+        st.subheader('남기고 싶은 말 적어주세요')
 
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-    """
-    )
+        if "my_input" not in st.session_state:
+            st.session_state["my_input"] = ""
 
-    st.subheader('내용을 입력하세요')
+        my_input = st.text_input(
+            "Input a text here", st.session_state["my_input"])
+        submit = st.button("입력")
 
-    if "my_input" not in st.session_state:
-        st.session_state["my_input"] = ""
+        if submit:
+            st.session_state["my_input"] = my_input
+            st.write("입력된 내용 : ", my_input)
 
-    my_input = st.text_input("Input a text here", st.session_state["my_input"])
-    submit = st.button("입력")
+    if selected == "User":
+        print(username)
+        # Creating an update user details widget
+        try:
+            if authenticator.update_user_details(username, 'Update user details'):
+                st.success('Entries updated successfully')
+        except Exception as e:
+            st.error(e)
 
-    if submit:
-        st.session_state["my_input"] = my_input
-        st.write("입력된 내용 : ", my_input)
+    # Saving config file
+    with open('../config.yaml', 'w') as file:
+        yaml.dump(config, file, default_flow_style=False)
 # 개발 커리어 화면
 
 
@@ -532,95 +550,138 @@ authenticator = stauth.Authenticate(
 
 )
 
-name, authentication_status, username = authenticator.login('Login', 'main')
 
-if authentication_status:
+def register():
+    import yaml
+    from yaml.loader import SafeLoader
+    import streamlit as st  # pip install streamlit
 
-    st.write(f'Welcome *{name}*')
+    try:
+        if authenticator.register_user('Register user', 'main', preauthorization=False):
+            st.success('User registered successfully')
+    except Exception as e:
+        st.error(e)
 
-    # insert content
-    page_names_to_funcs = {
-        "🐦HOME": home,
-        "🌏PROJECT": project,
-        "📞CONTACT": contact,
-        "📈INVESTMENT": investment,
-        "💰SAVING": saving,
-        "🎈LOVE": love
-
-    }
-    # sidebar.selectbox
-    demo_name = st.sidebar.selectbox("목록", page_names_to_funcs.keys())
-    page_names_to_funcs[demo_name]()
-    authenticator.logout('Logout', 'sidebar')
+    # Saving config file
+    with open('../config.yaml', 'w') as file:
+        yaml.dump(config, file, default_flow_style=False)
 
 
-elif authentication_status == False:
-    st.error('Username/password is incorrect')
-    forgot_pw = st.button('Forgot password')
-    if forgot_pw:
-        # Creating a forgot password widget
-        try:
-            username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password(
-                'Forgot password')
-            if username_forgot_pw:
-                st.success('New password sent securely')
-                # Random password to be transferred to user securely
-            elif username_forgot_pw == False:
-                st.error('Username not found')
-        except Exception as e:
-            st.error(e)
+def forget_username():
+
+    import streamlit as st  # pip install streamlit
+    # Creating a forgot username widget
+    try:
+        username_forgot_username, email_forgot_username = authenticator.forgot_username(
+            'Forgot username')
+        print(username_forgot_username)
+        print(email_forgot_username)
+        if username_forgot_username:
+            st.success('Your Username : ' + username_forgot_username)
+
+            # Username to be transferred to user securely
+        elif username_forgot_username == False:
+            st.error('Email not found')
+    except Exception as e:
+        st.error(e)
+
+    # Saving config file
+    with open('../config.yaml', 'w') as file:
+        yaml.dump(config, file, default_flow_style=False)
 
 
-elif authentication_status == None:
-    st.warning('Please enter your username and password')
+def forget_pw():
+    # Creating a forgot password widget
+    try:
+        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password(
+            'Forgot password')
+        if username_forgot_pw:
+            st.success('New password sent securely')
+            # Random password to be transferred to user securely
+        elif username_forgot_pw == False:
+            st.error('Username not found')
+    except Exception as e:
+        st.error(e)
 
-# Creating a password reset widget
-if authentication_status:
+    # Saving config file
+    with open('../config.yaml', 'w') as file:
+        yaml.dump(config, file, default_flow_style=False)
+
+
+def reset_password(username):
+    # Creating a password reset widget
     try:
         if authenticator.reset_password(username, 'Reset password'):
             st.success('Password modified successfully')
     except Exception as e:
         st.error(e)
 
-# Creating a new user registration widget
-try:
-    if authenticator.register_user('Register user', 'sidebar', preauthorization=False):
-        st.success('User registered successfully')
-except Exception as e:
-    st.error(e)
+    # Saving config file
+    with open('../config.yaml', 'w') as file:
+        yaml.dump(config, file, default_flow_style=False)
 
-# Creating a forgot password widget
-try:
-    username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password(
-        'Forgot password')
-    if username_forgot_pw:
-        st.success('New password sent securely')
-        # Random password to be transferred to user securely
-    elif username_forgot_pw == False:
-        st.error('Username not found')
-except Exception as e:
-    st.error(e)
 
-# Creating a forgot username widget
-try:
-    username_forgot_username, email_forgot_username = authenticator.forgot_username(
-        'Forgot username')
-    if username_forgot_username:
-        st.success('Username sent securely')
-        # Username to be transferred to user securely
-    elif username_forgot_username == False:
-        st.error('Email not found')
-except Exception as e:
-    st.error(e)
+def main_login():
+    import plotly.graph_objects as go
+    import calendar
+    from datetime import datetime
+    import yaml
+    from yaml.loader import SafeLoader
+    import streamlit.components.v1 as components
 
-# Creating an update user details widget
-if authentication_status:
-    try:
-        if authenticator.update_user_details(username, 'Update user details'):
-            st.success('Entries updated successfully')
-    except Exception as e:
-        st.error(e)
+    import streamlit as st  # pip install streamlit
+    # pip install streamlit_option_menu
+    from streamlit_option_menu import option_menu
+    import streamlit_authenticator as stauth  # pip install streamlit_authenticator
 
-# Saving config file
-with open('../config.yaml', 'w') as file:
-    yaml.dump(config, file, default_flow_style=False)
+    name, authentication_status, username = authenticator.login(
+        'Login', 'main')
+
+    rest_pw_button = st.button('Reset PW',)
+
+    if rest_pw_button:
+        try:
+            if authenticator.reset_password(username, 'Reset password'):
+                st.success('Password modified successfully')
+        except Exception as e:
+            st.error(e)
+
+    # 여기서 부터  main page
+    if authentication_status:
+
+        st.write(f'Welcome *{name}*')
+
+        # insert content
+        page_names_to_funcs = {
+            "🐦HOME": home,
+            "🌏PROJECT": project,
+            "📞CONTACT": contact,
+            "📈INVESTMENT": investment,
+            "💰SAVING": saving,
+            "🎈LOVE": love
+
+        }
+        # sidebar.selectbox
+        demo_name = st.sidebar.selectbox("목록", page_names_to_funcs.keys())
+        page_names_to_funcs[demo_name](username)
+        authenticator.logout('Logout', 'sidebar')
+
+    elif authentication_status == False:
+        st.error('Username/password is incorrect')
+
+    elif authentication_status == None:
+        st.warning('Please enter your username and password')
+
+
+# name, authentication_status, username = authenticator.login('Login', 'main')
+
+authentication_login = {
+    "Login🔒": main_login,
+    "Sign Up🚀": register,
+    "Username lost": forget_username,
+    "Password lost": forget_pw
+}
+
+authentication_setting = st.sidebar.selectbox(
+    "Do you have Authenticate?", authentication_login.keys())
+authentication_login[authentication_setting]()
