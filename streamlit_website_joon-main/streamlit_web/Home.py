@@ -528,9 +528,9 @@ def love(username):
 
 
 # ----USE AYTHENTICATION --
-cwd = os.getcwd()
-st.write(cwd)
-with open('config.yaml') as file:
+# cwd = os.getcwd()
+# st.write(cwd)
+with open('/app/streamlit_website_joon-main/streamlit_website_joon-main/streamlit_web/config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
