@@ -1,0 +1,4 @@
+1. pw reset button -> user navbar 이동 
+
+
+2. sidebar issue -> if else 문으로 해결 가능 

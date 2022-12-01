@@ -23,11 +23,11 @@ def home(username):
     from streamlit_option_menu import option_menu
     import streamlit_authenticator as stauth  # pip install streamlit_authenticator
 
-    selected = option_menu(menu_title=None, options=["Intro", "User"], icons=[
+    selected = option_menu(menu_title=None, options=["Intro", "Comments", "User"], icons=[
                            "pencil-fill", "bar-chart-fill"], orientation="horizontal",)
     if selected == "Intro":
         st.write("# Welcome to everyone 👋")
-        st.sidebar.success("Select above.")
+        st.sidebar.success("Select selectbox above.")
 
         st.markdown(
             """
@@ -46,6 +46,22 @@ def home(username):
         """
         )
 
+    # navbar -> USer
+    if selected == "User":
+        st.sidebar.success("Select selectbox above.")
+
+        # Creating an update user details widget
+        try:
+            if authenticator.update_user_details(username, 'Update user details'):
+                st.success('Entries updated successfully')
+        except Exception as e:
+            st.error(e)
+
+        reset_pw(username)
+
+    if selected == "Comments":
+        st.sidebar.success("Select selectbox above.")
+
         st.subheader('남기고 싶은 말 적어주세요')
 
         if "my_input" not in st.session_state:
@@ -59,22 +75,13 @@ def home(username):
             st.session_state["my_input"] = my_input
             st.write("입력된 내용 : ", my_input)
 
-    if selected == "User":
-        print(username)
-        # Creating an update user details widget
-        try:
-            if authenticator.update_user_details(username, 'Update user details'):
-                st.success('Entries updated successfully')
-        except Exception as e:
-            st.error(e)
-
     # Saving config file
     with open('../config.yaml', 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
 # 개발 커리어 화면
 
 
-def project():
+def project(username):
     import streamlit as st
     from streamlit_option_menu import option_menu
 
@@ -91,7 +98,7 @@ def project():
 # 연락
 
 
-def contact():
+def contact(username):
     import streamlit as st
 
     # st.set_page_config(
@@ -132,7 +139,7 @@ def contact():
 # 투자
 
 
-def investment():
+def investment(username):
     import datetime
     import streamlit as st
     import pandas_datareader as pdr  # pip install pandas_datareader
@@ -180,7 +187,7 @@ def investment():
     st.plotly_chart(fig_volume)
 
 
-def saving():
+def saving(username):
     import streamlit as st
     # ------settings--------------------------------
     incomes = ["Salary", "Blog", "Other Income"]
@@ -301,7 +308,7 @@ def saving():
                 st.plotly_chart(fig, use_container_width=True)
 
 
-def love():
+def love(username):
     import streamlit as st
 
     def intro():
@@ -312,24 +319,6 @@ def love():
 
         st.markdown(
             """
-            Streamlit is an open-source app framework built specifically for
-            Machine Learning and Data Science projects.
-
-            **👈 Select a demo from the dropdown on the left** to see some examples
-            of what Streamlit can do!
-
-            ### Want to learn more?
-
-            - Check out [streamlit.io](https://streamlit.io)
-            - Jump into our [documentation](https://docs.streamlit.io)
-            - Ask a question in our [community
-            forums](https://discuss.streamlit.io)
-
-            ### See more complex demos
-
-            - Use a neural net to [analyze the Udacity Self-driving Car Image
-            Dataset](https://github.com/streamlit/demo-self-driving)
-            - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
         """
         )
 
@@ -585,9 +574,9 @@ def forget_username():
     except Exception as e:
         st.error(e)
 
-    # Saving config file
-    with open('../config.yaml', 'w') as file:
-        yaml.dump(config, file, default_flow_style=False)
+    # # Saving config file
+    # with open('../config.yaml', 'w') as file:
+    #     yaml.dump(config, file, default_flow_style=False)
 
 
 def forget_pw():
@@ -604,11 +593,11 @@ def forget_pw():
         st.error(e)
 
     # Saving config file
-    with open('../config.yaml', 'w') as file:
-        yaml.dump(config, file, default_flow_style=False)
+    # with open('../config.yaml', 'w') as file:
+    #     yaml.dump(config, file, default_flow_style=False)
 
 
-def reset_password(username):
+def reset_pw(username):
     # Creating a password reset widget
     try:
         if authenticator.reset_password(username, 'Reset password'):
@@ -616,6 +605,18 @@ def reset_password(username):
     except Exception as e:
         st.error(e)
 
+    # Saving config file
+    with open('../config.yaml', 'w') as file:
+        yaml.dump(config, file, default_flow_style=False)
+
+
+def update_user_d(username):
+    # Creating an update user details widget
+    try:
+        if authenticator.update_user_details(username, 'Update user details'):
+            st.success('Entries updated successfully')
+    except Exception as e:
+        st.error(e)
     # Saving config file
     with open('../config.yaml', 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
@@ -637,16 +638,7 @@ def main_login():
     name, authentication_status, username = authenticator.login(
         'Login', 'main')
 
-    rest_pw_button = st.button('Reset PW',)
-
-    if rest_pw_button:
-        try:
-            if authenticator.reset_password(username, 'Reset password'):
-                st.success('Password modified successfully')
-        except Exception as e:
-            st.error(e)
-
-    # 여기서 부터  main page
+    # 여기서 부터  home page
     if authentication_status:
 
         st.write(f'Welcome *{name}*')
@@ -662,8 +654,9 @@ def main_login():
 
         }
         # sidebar.selectbox
-        demo_name = st.sidebar.selectbox("목록", page_names_to_funcs.keys())
-        page_names_to_funcs[demo_name](username)
+
+        main_selectbox = st.sidebar.selectbox("목록", page_names_to_funcs.keys())
+        page_names_to_funcs[main_selectbox](username)
         authenticator.logout('Logout', 'sidebar')
 
     elif authentication_status == False:
@@ -682,6 +675,6 @@ authentication_login = {
     "Password lost": forget_pw
 }
 
-authentication_setting = st.sidebar.selectbox(
+authentication_selectbox = st.sidebar.selectbox(
     "Do you have Authenticate?", authentication_login.keys())
-authentication_login[authentication_setting]()
+authentication_login[authentication_selectbox]()

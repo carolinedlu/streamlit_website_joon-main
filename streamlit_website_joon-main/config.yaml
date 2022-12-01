@@ -13,12 +13,12 @@ credentials:
       name: eotkdch
       password: $2b$12$smjHhu9EukZm6lDulFPs9OEzReg8LnrJh5L5CLkeIC6pF3EWMQyme
     ghwnsgkgk:
-      email: ghwnsglgl@nate.com
+      email: ghwnsgkgk@kakao.com
       name: leejoonho
       password: $2b$12$2axUlVG0XE4hx3i0GaM7weU3Z5FjADjsZasSOOsKekxIZwtcBLRca
     wnsghwnsgh:
       email: ghwnsgkgk@nate.com
-      name: "\uC774\uC900\uD638"
+      name: wnsgh774
       password: $2b$12$J11KxFJbz90Zvj.VSXJv1ePhTikZA3PGr3hFFxJOpQdS10GCwCDyW
 preauthorized:
   emails:
