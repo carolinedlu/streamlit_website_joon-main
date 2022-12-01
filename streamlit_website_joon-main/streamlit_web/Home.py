@@ -4,6 +4,7 @@ from datetime import datetime
 import yaml
 from yaml.loader import SafeLoader
 import streamlit.components.v1 as components
+import os
 
 import streamlit as st  # pip install streamlit
 # pip install streamlit_option_menu
@@ -527,6 +528,8 @@ def love(username):
 
 
 # ----USE AYTHENTICATION --
+cwd = os.getcwd()
+st.write(cwd)
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
