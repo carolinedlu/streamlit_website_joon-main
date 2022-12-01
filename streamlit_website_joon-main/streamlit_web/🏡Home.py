@@ -76,7 +76,7 @@ def home(username):
             st.write("입력된 내용 : ", my_input)
 
     # Saving config file
-    with open('../config.yaml', 'w') as file:
+    with open('config.yaml', 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
 # 개발 커리어 화면
 
@@ -527,7 +527,7 @@ def love(username):
 
 
 # ----USE AYTHENTICATION --
-with open('../config.yaml') as file:
+with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
@@ -552,7 +552,7 @@ def register():
         st.error(e)
 
     # Saving config file
-    with open('../config.yaml', 'w') as file:
+    with open('config.yaml', 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
 
 
@@ -575,7 +575,7 @@ def forget_username():
         st.error(e)
 
     # # Saving config file
-    # with open('../config.yaml', 'w') as file:
+    # with open('config.yaml', 'w') as file:
     #     yaml.dump(config, file, default_flow_style=False)
 
 
@@ -593,7 +593,7 @@ def forget_pw():
         st.error(e)
 
     # Saving config file
-    # with open('../config.yaml', 'w') as file:
+    # with open('config.yaml', 'w') as file:
     #     yaml.dump(config, file, default_flow_style=False)
 
 
@@ -606,7 +606,7 @@ def reset_pw(username):
         st.error(e)
 
     # Saving config file
-    with open('../config.yaml', 'w') as file:
+    with open('config.yaml', 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
 
 
@@ -618,7 +618,7 @@ def update_user_d(username):
     except Exception as e:
         st.error(e)
     # Saving config file
-    with open('../config.yaml', 'w') as file:
+    with open('config.yaml', 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
 
 
